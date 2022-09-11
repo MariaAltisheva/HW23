@@ -8,7 +8,9 @@ CMD_TO_FUNCTION = {'filter': functions.filter_query,
 
 FILE_NAME = 'data/apache_logs.txt'
 
+
 def build_query(cmd, param, data):
+    """Функция создания запроса."""
     if data is None:
         with open(FILE_NAME) as file:
             prepared_data = list(map(lambda x: x.strip(), file))
