@@ -1,7 +1,8 @@
 from marshmallow import fields, Schema, validates_schema, ValidationError
 
+#cmd1=regex value1=images\/\w+\.png
 
-VALID_CMD_PARAMS = ('filter', 'sort', 'map', 'unique', 'limit')
+VALID_CMD_PARAMS = ('filter', 'sort', 'map', 'unique', 'limit', 'regex')
 
 
 class RequestParams(Schema):

@@ -1,26 +1,33 @@
-def filter_query(param, data):
+import re
+from typing import List
+
+def filter_query(param: str, data: List[str]) -> List[str]:
     """Функция фильтрации данных."""
     return list(filter(lambda x: param in x, data))
 
 
-def map_query(param, data):
+def map_query(param: str, data: List[str]) -> List[str]:
     """Функция получает номер колонки и выводит списком данные этой колонки."""
     col_number = int(param)
     return list(map(lambda x: x.split(' ')[col_number], data))
 
 
-def unique_query(data, *args, **kwargs):
+def unique_query(data: List[str], *args, **kwargs) -> List:
     """Функция создает список из уникальных позиций."""
     return list(set(data))
 
 
-def sort_query(param, data):
+def sort_query(param: str, data: List[str]) -> List[str]:
     """ Функция сортировки данных."""
     reverse = False if param == 'asc' else True
     return sorted(data, reverse=reverse)
 
 
-def limit_query(param, data):
+def limit_query(param: str, data: List[str]) -> List[str]:
     """Функция создает список позиций в заданном количестве."""
     limit = int(param)
     return list(data)[:limit]
+
+def search_pic(param: str, data: List[str]) -> List[str]:
+    regex = re.compile(param)
+    return list(filter(lambda y: regex.search(y), data))
