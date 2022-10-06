@@ -1,8 +1,9 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, Response, request, jsonify
 
 from marshmallow import ValidationError
 
 from builder import build_query
+from db import db
 from models import BatchRequestParams
 
 
@@ -10,18 +11,34 @@ main_bp = Blueprint('main', __name__)
 
 
 @main_bp.route('/perform_query', methods=['POST'])
-def perform_query():
+def perform_query() -> Response:
     try:
         params = BatchRequestParams().load(request.json)
-
     except ValidationError as error:
-        return error.message, 404
+        return Response(response=error.messages, status=400)
 
     result = None
     for query in params['queries']:
         result = build_query(
-                cmd=query['cmd'],
-                param=query['value'],
-                data=result)
+            cmd=query['cmd'],
+            param=query['value'],
+            data=result,
+        )
 
     return jsonify(result)
+
+@main_bp.route('/', methods=['GET'])
+def index():
+    return 'Hello everybody'
+
+@main_bp.route('/test_db')
+def test_db():
+    result = db.session.execute(
+        'SELECT 232324'
+    ).scalar()
+
+    return jsonify(
+        {
+            'result': result
+        }
+    )
